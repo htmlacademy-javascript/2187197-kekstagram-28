@@ -88,16 +88,16 @@ function padString(string, minLength, symbols) {
 
 
 // Добавочный символ использован один раз
-padString('1', 2, '0');      // '01'
+padString('1', 2, '0'); // '01'
 
 // Добавочный символ использован три раза
-padString('1', 4, '0');      // '0001'
+padString('1', 4, '0'); // '0001'
 
 // Добавочные символы обрезаны с конца
-padString('q', 4, 'werty');  // 'werq'
+padString('q', 4, 'werty'); // 'werq'
 
 // Добавочные символы использованы полтора раза
-padString('q', 4, 'we');     // 'wweq'
+padString('q', 4, 'we'); // 'wweq'
 
 // Добавочные символы не использованы, исходная строка не изменена
 padString('qwerty', 4, '0'); // 'qwerty'
