@@ -83,7 +83,7 @@ function onDocumentKeyDown (evt) {
 
     cancelBigPicture();
   }
-};
+}
 
 const openModal = (pictures) => {
   thumbnailsContainer.addEventListener('click', (evt) => {
