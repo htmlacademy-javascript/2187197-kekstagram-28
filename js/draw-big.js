@@ -77,7 +77,7 @@ const cancelBigPicture = () => {
   commentsLoader.removeEventListener('click', onCommentLoadMore);
 };
 
-const onDocumentKeyDown = (evt) => {
+function onDocumentKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
@@ -91,6 +91,8 @@ const openModal = (pictures) => {
     if (!thumbnail) {
       return;
     }
+
+    evt.preventDefault();
     const picture = pictures.find(
       (item) => item.id === +thumbnail.dataset.thumbnailId
     );
