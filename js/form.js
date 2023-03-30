@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
 import { TAG_COUNT_MAX } from './origin-data.js';
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
 
 const TAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -23,6 +25,8 @@ const onImageUpload = () => {
 };
 
 const onImageCancel = () => {
+  resetScale();
+  resetEffects();
   uploadForm.reset();
   pristine.reset();
 
