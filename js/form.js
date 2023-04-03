@@ -42,11 +42,11 @@ function onDocumentKeyDown (evt) {
   }
 }
 
-function onFormPreventBubble (evt) {
+const onFormPreventBubble = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
-}
+};
 
 commentField.addEventListener('keydown', onFormPreventBubble);
 hashtagField.addEventListener('keydown', onFormPreventBubble);
@@ -58,11 +58,11 @@ const hasUniqueTags = (tags) => {
 };
 const isValidTagNumber = (tags) => tags.length <= TAG_COUNT_MAX;
 
-const tagsArray = (tags) => tags.trim().split(' ').filter((tag) => tag.trim().length);
+const transformTagsArray = (tags) => tags.trim().split(' ').filter((tag) => tag.trim().length);
 
-const validateTagsPattern = (value) => tagsArray(value).every(isValidTag);
-const validateTagsNumber = (value) => isValidTagNumber(tagsArray(value));
-const validateUniqueTags = (value) => hasUniqueTags(tagsArray(value));
+const validateTagsPattern = (value) => transformTagsArray(value).every(isValidTag);
+const validateTagsNumber = (value) => isValidTagNumber(transformTagsArray(value));
+const validateUniqueTags = (value) => hasUniqueTags(transformTagsArray(value));
 
 pristine.addValidator(hashtagField, validateTagsPattern, 'Тег начинается с #. Внутри только латинские буквы, кириллица и числа.');
 pristine.addValidator(hashtagField, validateUniqueTags, 'Ваши теги повторяются. Проверьте уникальность каждого.');

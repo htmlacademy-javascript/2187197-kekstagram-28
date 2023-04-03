@@ -23,7 +23,7 @@ const renderCommentClone = ({ avatar, name, message }) => {
 let commentsShown = 0;
 let commentsTotal = [];
 
-function loadComments() {
+const loadComments = () => {
   commentsShown += COMMENT_COUNT_SHOWN;
 
   if (commentsShown >= commentsTotal.length) {
@@ -44,7 +44,7 @@ function loadComments() {
   commentsContainer.innerHTML = '';
   commentsContainer.append(fragment);
   commentCount.innerHTML = `${commentsShown} из ${commentsTotal.length} комментариев`;
-}
+};
 
 const renderCommentBlock = (picture) => {
   commentsTotal = picture.comments;
@@ -77,13 +77,13 @@ const cancelBigPicture = () => {
   commentsLoader.removeEventListener('click', onCommentLoadMore);
 };
 
-function onDocumentKeyDown (evt) {
+const onDocumentKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
     cancelBigPicture();
   }
-}
+};
 
 const openModal = (pictures) => {
   thumbnailsContainer.addEventListener('click', (evt) => {
