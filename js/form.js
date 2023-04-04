@@ -8,6 +8,7 @@ const TAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadImageOverlay = document.querySelector('.img-upload__overlay');
 const uploadButton = document.querySelector('#upload-file');
+const uploadSubmit = document.querySelector('#upload-submit');
 const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
@@ -68,11 +69,29 @@ pristine.addValidator(hashtagField, validateTagsPattern, 'Тег начинае�
 pristine.addValidator(hashtagField, validateUniqueTags, 'Ваши теги повторяются. Проверьте уникальность каждого.');
 pristine.addValidator(hashtagField, validateTagsNumber, 'Ограничение поля - до 5 комментариев. Исправьте количество тегов.');
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-};
-
 uploadButton.addEventListener('change', onImageUpload);
 cancelButton.addEventListener('click', onImageCancel);
-uploadForm.addEventListener('submit', onFormSubmit);
+
+const blockUploadSubmit = () => {
+  uploadSubmit.disabled = true;
+};
+
+const unblockUploadSubmit = () => {
+  uploadSubmit.disabled = false;
+};
+
+const setUserFormSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      blockUploadSubmit();
+      await cb(new FormData(uploadForm));
+      unblockUploadSubmit();
+    }
+  });
+};
+
+export { setUserFormSubmit, onImageCancel };
