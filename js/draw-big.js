@@ -67,6 +67,7 @@ const showBigPicture = (picture) => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   drawBigPicture(picture);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
 const cancelBigPicture = () => {
@@ -75,15 +76,16 @@ const cancelBigPicture = () => {
   commentsContainer.innerHTML = '';
   commentsShown = 0;
   commentsLoader.removeEventListener('click', onCommentLoadMore);
+  document.removeEventListener('keydown', onDocumentKeyDown);
 };
 
-const onDocumentKeyDown = (evt) => {
+function onDocumentKeyDown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
     cancelBigPicture();
   }
-};
+}
 
 const openModal = (pictures) => {
   thumbnailsContainer.addEventListener('click', (evt) => {
@@ -103,8 +105,6 @@ const openModal = (pictures) => {
     if (!commentsLoader.classList.contains('hidden')) {
       commentsLoader.addEventListener('click', onCommentLoadMore);
     }
-
-    document.addEventListener('keydown', onDocumentKeyDown);
   });
 
 };
@@ -113,7 +113,6 @@ const closeModal = () => {
   closeButton.addEventListener('click', () => {
     cancelBigPicture();
 
-    document.removeEventListener('keydown', onDocumentKeyDown);
   });
 };
 
