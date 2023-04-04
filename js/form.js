@@ -8,6 +8,7 @@ const TAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadImageOverlay = document.querySelector('.img-upload__overlay');
 const uploadButton = document.querySelector('#upload-file');
+const uploadSubmit = document.querySelector('#upload-submit');
 const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
@@ -42,11 +43,11 @@ function onDocumentKeyDown (evt) {
   }
 }
 
-function onFormPreventBubble (evt) {
+const onFormPreventBubble = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
-}
+};
 
 commentField.addEventListener('keydown', onFormPreventBubble);
 hashtagField.addEventListener('keydown', onFormPreventBubble);
@@ -58,21 +59,39 @@ const hasUniqueTags = (tags) => {
 };
 const isValidTagNumber = (tags) => tags.length <= TAG_COUNT_MAX;
 
-const tagsArray = (tags) => tags.trim().split(' ').filter((tag) => tag.trim().length);
+const transformTagsArray = (tags) => tags.trim().split(' ').filter((tag) => tag.trim().length);
 
-const validateTagsPattern = (value) => tagsArray(value).every(isValidTag);
-const validateTagsNumber = (value) => isValidTagNumber(tagsArray(value));
-const validateUniqueTags = (value) => hasUniqueTags(tagsArray(value));
+const validateTagsPattern = (value) => transformTagsArray(value).every(isValidTag);
+const validateTagsNumber = (value) => isValidTagNumber(transformTagsArray(value));
+const validateUniqueTags = (value) => hasUniqueTags(transformTagsArray(value));
 
 pristine.addValidator(hashtagField, validateTagsPattern, 'Тег начинается с #. Внутри только латинские буквы, кириллица и числа.');
 pristine.addValidator(hashtagField, validateUniqueTags, 'Ваши теги повторяются. Проверьте уникальность каждого.');
 pristine.addValidator(hashtagField, validateTagsNumber, 'Ограничение поля - до 5 комментариев. Исправьте количество тегов.');
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-};
-
 uploadButton.addEventListener('change', onImageUpload);
 cancelButton.addEventListener('click', onImageCancel);
-uploadForm.addEventListener('submit', onFormSubmit);
+
+const blockUploadSubmit = () => {
+  uploadSubmit.disabled = true;
+};
+
+const unblockUploadSubmit = () => {
+  uploadSubmit.disabled = false;
+};
+
+const setUserFormSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      blockUploadSubmit();
+      await cb(new FormData(uploadForm));
+      unblockUploadSubmit();
+    }
+  });
+};
+
+export { setUserFormSubmit, onImageCancel };

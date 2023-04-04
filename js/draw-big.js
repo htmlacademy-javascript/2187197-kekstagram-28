@@ -23,7 +23,7 @@ const renderCommentClone = ({ avatar, name, message }) => {
 let commentsShown = 0;
 let commentsTotal = [];
 
-function loadComments() {
+const loadComments = () => {
   commentsShown += COMMENT_COUNT_SHOWN;
 
   if (commentsShown >= commentsTotal.length) {
@@ -44,7 +44,7 @@ function loadComments() {
   commentsContainer.innerHTML = '';
   commentsContainer.append(fragment);
   commentCount.innerHTML = `${commentsShown} из ${commentsTotal.length} комментариев`;
-}
+};
 
 const renderCommentBlock = (picture) => {
   commentsTotal = picture.comments;
@@ -67,6 +67,7 @@ const showBigPicture = (picture) => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   drawBigPicture(picture);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
 const cancelBigPicture = () => {
@@ -75,6 +76,7 @@ const cancelBigPicture = () => {
   commentsContainer.innerHTML = '';
   commentsShown = 0;
   commentsLoader.removeEventListener('click', onCommentLoadMore);
+  document.removeEventListener('keydown', onDocumentKeyDown);
 };
 
 function onDocumentKeyDown (evt) {
@@ -103,8 +105,6 @@ const openModal = (pictures) => {
     if (!commentsLoader.classList.contains('hidden')) {
       commentsLoader.addEventListener('click', onCommentLoadMore);
     }
-
-    document.addEventListener('keydown', onDocumentKeyDown);
   });
 
 };
@@ -113,7 +113,6 @@ const closeModal = () => {
   closeButton.addEventListener('click', () => {
     cancelBigPicture();
 
-    document.removeEventListener('keydown', onDocumentKeyDown);
   });
 };
 
