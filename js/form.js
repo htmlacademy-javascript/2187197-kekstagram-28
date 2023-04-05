@@ -4,9 +4,11 @@ import { resetScale } from './scale.js';
 import { resetEffects } from './effect.js';
 
 const TAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadImageOverlay = document.querySelector('.img-upload__overlay');
+const uploadPreview = document.querySelector('.img-upload__preview img');
 const uploadButton = document.querySelector('#upload-file');
 const uploadSubmit = document.querySelector('#upload-submit');
 const cancelButton = document.querySelector('#upload-cancel');
@@ -23,6 +25,13 @@ const onImageUpload = () => {
   uploadImageOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeyDown);
+
+  const file = uploadButton.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    uploadPreview.src = URL.createObjectURL(file);
+  }
 };
 
 const onImageCancel = () => {
