@@ -1,19 +1,28 @@
 import { isEscapeKey } from './util.js';
 
-const removeAlert = () => {
-  let alertShown = document.querySelector('.success');
-  if (!alertShown) {
-    alertShown = document.querySelector('.error');
-  }
-  alertShown.remove();
+const checkTypeAlert = () => document.querySelector('.success, .error');
+
+const removeAlert = (item) => {
+  item.remove();
+  document.removeEventListener('click', removeWithCheck);
   document.removeEventListener('keydown', onDocumentKeyDown);
 };
 
+function removeWithCheck(evt) {
+  const alertShown = checkTypeAlert();
+
+  if (evt.target === alertShown) {
+    removeAlert(alertShown);
+  }
+}
+
 function onDocumentKeyDown (evt) {
   if (isEscapeKey(evt)) {
+    const alertShown = checkTypeAlert();
+
     evt.preventDefault();
 
-    removeAlert();
+    removeAlert(alertShown);
   }
 }
 
@@ -29,8 +38,8 @@ const showAlert = (type) => {
   const alertShown = document.querySelector(`.${type}`);
   const alertCloseButton = document.querySelector(`.${type}__button`);
 
-  alertShown.addEventListener('click', removeAlert);
-  alertCloseButton.addEventListener('click', removeAlert);
+  alertCloseButton.addEventListener('click', () => removeAlert(alertShown));
+  document.addEventListener('click', removeWithCheck);
   document.addEventListener('keydown', onDocumentKeyDown);
 };
 
