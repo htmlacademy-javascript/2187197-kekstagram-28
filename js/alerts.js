@@ -1,11 +1,13 @@
 import { isEscapeKey } from './util.js';
+import { onDocumentKeyDown } from './form.js';
 
 const checkTypeAlert = () => document.querySelector('.success, .error');
 
 const removeAlert = (item) => {
   item.remove();
   document.removeEventListener('click', removeWithCheck);
-  document.removeEventListener('keydown', onDocumentKeyDown);
+  document.removeEventListener('keydown', onAlertKeyDown);
+  document.addEventListener('keydown', onDocumentKeyDown);
 };
 
 function removeWithCheck(evt) {
@@ -16,7 +18,7 @@ function removeWithCheck(evt) {
   }
 }
 
-function onDocumentKeyDown (evt) {
+function onAlertKeyDown (evt) {
   if (isEscapeKey(evt)) {
     const alertShown = checkTypeAlert();
 
@@ -40,7 +42,8 @@ const showAlert = (type) => {
 
   alertCloseButton.addEventListener('click', () => removeAlert(alertShown));
   document.addEventListener('click', removeWithCheck);
-  document.addEventListener('keydown', onDocumentKeyDown);
+  document.removeEventListener('keydown', onDocumentKeyDown);
+  document.addEventListener('keydown', onAlertKeyDown);
 };
 
 export { showAlert };

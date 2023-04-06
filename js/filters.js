@@ -19,9 +19,9 @@ const sortByComments = (photoA, photoB) => photoB.comments.length - photoA.comme
 const applyFilters = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
-      return [...photos].slice().sort(sortRandomly).slice(0, PHOTOS_COUNT);
+      return [...photos].sort(sortRandomly).slice(0, PHOTOS_COUNT);
     case Filter.DISCUSSED:
-      return [...photos].slice().sort(sortByComments);
+      return [...photos].sort(sortByComments);
     default:
       return [...photos];
   }
@@ -38,9 +38,8 @@ const setOnFilterClick = (cb) => {
       return;
     }
 
-    filtersContainer
-      .querySelector(`.${activeButtonTag}`)
-      .classList.remove(`${activeButtonTag}`);
+    const taggedFilterButton = filtersContainer.querySelector(`.${activeButtonTag}`);
+    taggedFilterButton.classList.remove(`${activeButtonTag}`);
     activeFilterButton.classList.add(`${activeButtonTag}`);
     currentFilter = activeFilterButton.id;
     cb(applyFilters());
