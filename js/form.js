@@ -74,9 +74,9 @@ const validateTagsPattern = (value) => transformTagsArray(value).every(isValidTa
 const validateTagsNumber = (value) => isValidTagNumber(transformTagsArray(value));
 const validateUniqueTags = (value) => hasUniqueTags(transformTagsArray(value));
 
-pristine.addValidator(hashtagField, validateTagsPattern, 'Тег начинается с #. Внутри только латинские буквы, кириллица и числа.');
+pristine.addValidator(hashtagField, validateTagsPattern, 'Тег начинается с #. Внутри только латинские буквы, кириллица и числа. 1 тег - до 20 символов');
 pristine.addValidator(hashtagField, validateUniqueTags, 'Ваши теги повторяются. Проверьте уникальность каждого.');
-pristine.addValidator(hashtagField, validateTagsNumber, 'Ограничение поля - до 5 комментариев. Исправьте количество тегов.');
+pristine.addValidator(hashtagField, validateTagsNumber, 'Ограничение поля - до 5 тегов. Исправьте количество.');
 
 uploadButton.addEventListener('change', onImageUpload);
 cancelButton.addEventListener('click', onImageCancel);
