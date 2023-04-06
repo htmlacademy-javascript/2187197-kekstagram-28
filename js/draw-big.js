@@ -43,7 +43,7 @@ const loadComments = () => {
 
   commentsContainer.innerHTML = '';
   commentsContainer.append(fragment);
-  commentCount.innerHTML = `${commentsShown} из ${commentsTotal.length} комментариев`;
+  commentCount.textContent = `${commentsShown} из ${commentsTotal.length} комментариев`;
 };
 
 const renderCommentBlock = (picture) => {
