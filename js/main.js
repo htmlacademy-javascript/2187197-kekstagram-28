@@ -4,9 +4,10 @@ import { setUserFormSubmit, onImageCancel } from './form.js';
 import { getData, sendData } from './api.js';
 import { showAlert } from './alerts.js';
 import { renderFilters } from './filters.js';
-import { debounce } from './util.js';
+import { debounce, showSystemMessage } from './util.js';
 
 const RERENDER_DELAY = 500;
+const MESSAGE_SHOW_TIME = 5000;
 
 setUserFormSubmit(async (data) => {
   try {
@@ -25,5 +26,6 @@ try {
   renderFilters(data, debounceThumbnails);
   renderBigPicture(data);
 } catch {
-  throw new Error('Ошибка в подзагрузке миниатюр');
+  showSystemMessage('Сбой в подгрузке данных. Попробуйте подключиться позже', MESSAGE_SHOW_TIME);
+  throw new Error('Ошибка в получении данных с сервера');
 }
