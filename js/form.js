@@ -103,4 +103,4 @@ const setUserFormSubmit = (cb) => {
   });
 };
 
-export { setUserFormSubmit, onImageCancel };
+export { setUserFormSubmit, onImageCancel, onDocumentKeyDown };
