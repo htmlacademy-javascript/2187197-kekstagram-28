@@ -21,14 +21,14 @@ const renderCommentClone = ({ avatar, name, message }) => {
 };
 
 let commentsShown = 0;
-let commentsTotal = [];
+let commentsItems = [];
 
 const loadComments = () => {
   commentsShown += COMMENT_COUNT_SHOWN;
 
-  if (commentsShown >= commentsTotal.length) {
+  if (commentsShown >= commentsItems.length) {
     commentsLoader.classList.add('hidden');
-    commentsShown = commentsTotal.length;
+    commentsShown = commentsItems.length;
   } else {
     commentsLoader.classList.remove('hidden');
   }
@@ -36,18 +36,18 @@ const loadComments = () => {
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < commentsShown; i++) {
-    const comment = commentsTotal[i];
+    const comment = commentsItems[i];
     const commentClone = renderCommentClone(comment);
     fragment.append(commentClone);
   }
 
   commentsContainer.innerHTML = '';
   commentsContainer.append(fragment);
-  commentCount.textContent = `${commentsShown} из ${commentsTotal.length} комментариев`;
+  commentCount.textContent = `${commentsShown} из ${commentsItems.length} комментариев`;
 };
 
 const renderCommentBlock = (picture) => {
-  commentsTotal = picture.comments;
+  commentsItems = picture.comments;
   loadComments();
 };
 
